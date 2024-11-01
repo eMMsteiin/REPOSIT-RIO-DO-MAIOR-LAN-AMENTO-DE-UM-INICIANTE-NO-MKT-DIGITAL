@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VSL Player</title>
+    <style>
+        /* Estilos para centralizar o conteúdo e o fundo */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background: url('BACKGROUNDD\ DO\ MAIOR\ LANÇAMENTO\ DE\ UM\ INICIANTE\ DO\ MKT\ DIGITAL\ _LE_auto_x4\ 2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+       
+        
+
+        /* Contador de visualizações */
+        #view-count {
+            position: fixed;
+            top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        #video-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #fd2f1985-7463-4fd6-a450-9d46c3a17e57 {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Estilo para as notificações */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            width: 200px;
+            font-size: 14px;
+            animation: fadeInOut 5s ease-in-out;
+            opacity: 0;
+        }
+
+        /* Animação para aparecer e desaparecer */
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Responsividade para telas menores (celulares e tablets) */
+        @media (max-width: 768px) {
+            #view-count {
+                font-size: 16px;
+                padding: 8px 16px;
+                top: 5px;
+            }
+
+            #video-container iframe {
+                width: 90vw; /* Ajusta para largura da tela do dispositivo */
+                height: 50vw; /* Mantém uma proporção adequada para o vídeo */
+            }
+
+            .notification {
+                top: 5px;
+                right: 5px;
+                width: 150px;
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            .video-title {
+                font-size: 1.5rem; /* Ajusta o tamanho do título para telas menores */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Contador de visualizações dinâmico -->
+    <div id="view-count">100 pessoas estão assistindo agora</div>
+
+    
+    
+
+    <!-- Container para centralizar o player e o botão -->
+    <div id="video-container">
+        <!-- Player do Panda Video -->
+        <iframe id="panda-ab8f3977-e2bd-4231-99e3-ba13a56e5a1f"
+                src="https://player-vz-4ecc3a6e-9c5.tv.pandavideo.com.br/embed/?v=ab8f3977-e2bd-4231-99e3-ba13a56e5a1f"
+                style="border:none;"
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                allowfullscreen="true"
+                width="720"
+                height="360"
+                fetchpriority="high">
+        </iframe>
+
+        <!-- Botão para o Player -->
+        <div id="fd2f1985-7463-4fd6-a450-9d46c3a17e57"></div>
+    </div>
+
+    <!-- Script do botão, contador e notificações -->
+    <script>
+        if (!document.querySelector('script[src^="https://player.pandavideo.com.br/api.v2.js"]')) {
+            let s = document.createElement('script');
+            s.src = 'https://player.pandavideo.com.br/api.v2.js';
+            s.async = true;
+            document.head.appendChild(s);
+        }
+
+        window.pandascripttag = window.pandascripttag || [];
+        window.pandascripttag.push(function () {
+            const p = new PandaPlayer('panda-ab8f3977-e2bd-4231-99e3-ba13a56e5a1f', {
+                onReady() {
+                    p.loadButtonInTime({ fetchApi: true });
+                }
+            });
+        });
+
+        // Função para simular o número de pessoas assistindo
+        function simulateViewCount() {
+            let viewCount = Math.floor(Math.random() * 91) + 10; // Começa entre 10 e 100
+            setInterval(() => {
+                const change = Math.random() > 0.5 ? 3 : -3; // Muda de 3 em 3
+                viewCount = Math.min(100, Math.max(10, viewCount + change)); // Limita entre 10 e 100
+                document.getElementById('view-count').innerText = `${viewCount} pessoas estão assistindo agora`;
+            }, 3000);
+        }
+        simulateViewCount();
+
+        // Função para simular notificações de comentários
+        const firstNames = ["Rafael", "Lucas", "Mariana", "Fernanda", "João", "Carla"];
+        const lastNames = ["Silva", "Souza", "Oliveira", "Santos", "Costa", "Pereira"];
+        const comments = [
+            "Fantástico, amei!!",
+            "Muito bom, valeu cada segundo!",
+            "Que conteúdo incrível!",
+            "Estou adorando!",
+            "Excelente, recomendo muito!",
+            "Espetacular, aprendi muito!"
+        ];
+
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function showNotification() {
+            const name = `${getRandomElement(firstNames)} ${getRandomElement(lastNames)}`;
+            const comment = getRandomElement(comments);
+
+            const notification = document.createElement("div");
+            notification.classList.add("notification");
+            notification.innerText = `${name}: ${comment}`;
+
+            document.body.appendChild(notification);
+
+            // Remove a notificação após alguns segundos
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Exibe notificações a cada 7 segundos
+        setInterval(showNotification, 7000);
+    </script>
+</body>
+</html>
